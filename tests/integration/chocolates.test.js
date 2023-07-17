@@ -72,3 +72,40 @@ expect(response.body.chocolates).to.deep.equal(output);
 
   });
 });
+
+describe('usando GET em /chocolates/:id para buscar o ID 4', function () {
+  it('retorna o chocolate mound', async function () {
+    const response = await chai.request(app).get('/chocolates/4');
+
+    expect(response.status).to.be.equal(200);
+    expect(response.body.chocolate).to.be.deep.equal(
+      {
+        id: 4,
+        name: 'Mounds',
+        brandId: 3,
+      }
+    )
+  })
+});
+
+describe('Usando o método GET em /chocolates/:id para buscar o ID 99', function () {
+    it('Retorna status 404 com a mensagem "Chocolate not found"', async function () {
+      const response = await chai
+        .request(app)
+        .get('/chocolates/99');
+
+      expect(response.status).to.be.equal(404);
+      expect(response.body).to.deep.equal({ message: 'Chocolate not found' })
+    });
+  });
+
+  describe('Usando o método GET em /chocolates/:id para buscar o ID 99', function () {
+    it('Retorna status 404 com a mensagem "Chocolate not found"', async function () {
+      const response = await chai
+        .request(app)
+        .get('/chocolates/99');
+
+      expect(response.status).to.be.equal(404);
+      expect(response.body).to.deep.equal({ message: 'Chocolate not found' })
+    });
+  });
