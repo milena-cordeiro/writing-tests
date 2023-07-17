@@ -109,3 +109,41 @@ describe('Usando o método GET em /chocolates/:id para buscar o ID 99', function
       expect(response.body).to.deep.equal({ message: 'Chocolate not found' })
     });
   });
+
+  describe('usando Get em /chocolates/total', function () {
+    it('retorna a quantidade total de chocolates', async function () {
+      const response = await chai.request(app).get('/chocolates/total');
+
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.deep.equal({ totalChocolates: 4 });
+    })
+  })
+
+  describe('usando GET em /chocolates/search?name=Mo', function () {
+    it('retorna os chocolates que contém o termo pesquisado', async function () {
+      const output = [
+        {
+          "id": 3,
+          "name": "Mon Chéri",
+          "brandId": 2
+        },
+        {
+          "id": 4,
+          "name": "Mounds",
+          "brandId": 3
+        }
+      ]
+      const response = await chai.request(app).get('/chocolates/search?name=Mo');
+
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.deep.equal(output);
+    });
+
+    it('retorna um array vazio quando não há chocolates que contenham o termo pesquisado', async function () {
+
+      const response = await chai.request(app).get('/chocolates/search?name=ZZZ');
+
+      expect(response.status).to.be.equal(404);
+      expect(response.body).to.be.deep.equal([]);
+    })
+  })
